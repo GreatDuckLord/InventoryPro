@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventoryPro • Orders & Shipping</title>
+    <meta name="description" content="Create packages, process payments, and track shipments with InventoryPro's order management system.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#8a2be2',
+                        'primary-light': '#b05bff',
+                        secondary: '#4a00e0',
+                        darker: '#080c14',
+                        surface: 'rgba(15, 23, 42, 0.65)',
+                        'surface-hover': 'rgba(30, 41, 59, 0.8)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body class="bg-darker text-slate-200 font-sans antialiased overflow-hidden selection:bg-primary-light selection:text-white">
+    <!-- Animated Orbs -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="flex flex-col md:flex-row h-screen relative z-10 p-2 sm:p-5 gap-2 sm:gap-5 backdrop-blur-[40px] bg-darker/40">
+
+        <!-- Mobile Overlay -->
+        <div id="mobile-overlay" onclick="toggleSidebar()"
+            class="fixed inset-0 bg-black/50 z-40 hidden md:hidden backdrop-blur-sm"></div>
+
+        <!-- Sidebar -->
+        <div id="sidebar"
+            class="glass-panel w-[280px] flex flex-col rounded-[20px] md:rounded-[30px] shadow-2xl absolute md:relative z-50 inset-y-2 md:inset-0 left-2 md:left-0 transition-transform duration-300 -translate-x-[110%] md:translate-x-0 overflow-hidden backdrop-blur-xl border border-white/10 h-[calc(100vh-16px)] md:h-auto">
+            <div class="px-6 py-6 md:px-8 md:py-8 border-b border-white/10 flex items-center gap-4 relative z-10">
+                <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-[0_10px_20px_rgba(138,43,226,0.3)]">
+                    📦
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight text-white font-display">InventoryPro</h1>
+            </div>
+
+            <nav class="flex-1 px-5 py-8 space-y-3 relative z-10">
+                <button onclick="window.location.href='dashboard.html'" id="nav-dashboard"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/5 relative overflow-hidden group">
+                    <span class="text-xl">📊</span>
+                    <span class="font-display tracking-wide">Dashboard</span>
+                </button>
+                <button onclick="window.location.href='dashboard.html?section=inventory'" id="nav-inventory"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">📋</span>
+                    <span class="font-display tracking-wide">Inventory</span>
+                </button>
+                <button onclick="window.location.href='dashboard.html?section=reports'" id="nav-reports"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">📈</span>
+                    <span class="font-display tracking-wide">Reports</span>
+                </button>
+                <button id="nav-orders"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group active-nav">
+                    <span class="text-xl">🚚</span>
+                    <span class="font-display tracking-wide">Orders</span>
+                </button>
+                <button onclick="window.location.href='dashboard.html?section=about'" id="nav-about"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">ℹ️</span>
+                    <span class="font-display tracking-wide">About Us</span>
+                </button>
+                <button onclick="window.location.href='dashboard.html?section=contact'" id="nav-contact"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">✉️</span>
+                    <span class="font-display tracking-wide">Contact</span>
+                </button>
+            </nav>
+
+            <div class="p-5 border-t border-white/10 relative z-10">
+                <div class="flex items-center gap-4 rounded-2xl p-4 bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center text-white font-bold text-sm shadow-[0_5px_15px_rgba(138,43,226,0.4)] group-hover:scale-105 transition-transform">
+                        NB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-white font-display tracking-wide">Manager</p>
+                        <p class="text-xs text-primary-light font-medium">Admin • Tangier</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden relative min-w-0">
+
+            <!-- Top Bar -->
+            <header class="min-h-[72px] md:min-h-[88px] glass-panel rounded-[20px] md:rounded-[30px] border border-white/10 shadow-xl mb-3 md:mb-5 p-4 md:px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4 backdrop-blur-xl">
+                <div class="flex items-center gap-4 w-full lg:w-auto">
+                    <button onclick="toggleSidebar()" class="md:hidden text-white hover:text-primary transition-colors p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <h2 class="text-xl md:text-3xl font-bold tracking-tight text-white font-display">Orders & Shipping</h2>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 md:gap-5 w-full lg:w-auto">
+                    <div onclick="showCreateModal()"
+                        class="flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary-light hover:to-primary text-white px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl cursor-pointer font-semibold shadow-[0_10px_20px_rgba(138,43,226,0.3)] hover:shadow-[0_15px_30px_rgba(138,43,226,0.5)] transition-all duration-300 hover:-translate-y-0.5 group flex-1 md:flex-none justify-center text-sm md:text-base">
+                        <span class="text-lg md:text-xl group-hover:rotate-90 transition-transform duration-300">＋</span>
+                        <span class="font-display tracking-wide whitespace-nowrap">New Package</span>
+                    </div>
+                    <div class="relative group flex-1 md:flex-none min-w-[150px]">
+                        <span class="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-light transition-colors text-sm md:text-base">🔍</span>
+                        <input id="search-input" onkeyup="filterOrders()" type="text" placeholder="Search orders..."
+                            class="bg-white/5 border border-white/10 focus:border-primary-light focus:bg-white/10 w-full lg:w-72 pl-9 md:pl-12 pr-4 py-2.5 md:py-3 rounded-xl md:rounded-2xl outline-none transition-all duration-300 text-xs md:text-sm text-white placeholder-slate-400 focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)]">
+                    </div>
+                    <button onclick="window.location.href='dashboard.html'"
+                        class="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white px-3 md:px-5 py-2.5 md:py-3 rounded-xl md:rounded-2xl transition-all duration-300 font-semibold group">
+                        <span class="group-hover:-translate-x-1 transition-transform"><i class="fa-solid fa-arrow-left"></i></span>
+                        <span class="font-display hidden sm:inline">Dashboard</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-auto rounded-[20px] md:rounded-[30px] glass-panel border border-white/10 p-4 sm:p-6 md:p-8 shadow-2xl relative scroll-smooth thin-scroll">
+
+                <!-- Stats -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+                    <div class="stat-card">
+                        <p class="stat-label">Total Orders</p>
+                        <p id="stat-total" class="stat-value text-white">0</p>
+                        <p class="stat-desc">All-time packages</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Revenue</p>
+                        <p id="stat-revenue" class="stat-value text-emerald-400">$0</p>
+                        <p class="stat-desc">From paid orders</p>
+                    </div>
+                    <div class="stat-card border-amber-500/30">
+                        <p class="stat-label">Pending</p>
+                        <p id="stat-pending" class="stat-value text-amber-400">0</p>
+                        <p class="stat-desc text-amber-500/70">Awaiting processing</p>
+                    </div>
+                    <div class="stat-card border-blue-500/30">
+                        <p class="stat-label">Shipped</p>
+                        <p id="stat-shipped" class="stat-value text-blue-400">0</p>
+                        <p class="stat-desc text-blue-500/70">In transit or delivered</p>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
+                    <h3 class="text-xl md:text-2xl font-bold text-white font-display">All Orders</h3>
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <div class="relative flex-1 sm:flex-none min-w-[150px]">
+                            <select id="status-filter" onchange="filterOrders()"
+                                class="w-full appearance-none bg-white/5 border border-white/10 hover:border-white/20 focus:border-primary px-4 md:px-6 py-2.5 md:py-3 pr-10 md:pr-12 rounded-xl outline-none text-sm text-white font-medium cursor-pointer transition-all focus:bg-darker/90 shadow-lg">
+                                <option value="" class="bg-darker">All Statuses</option>
+                                <option value="pending" class="bg-darker">Pending</option>
+                                <option value="processing" class="bg-darker">Processing</option>
+                                <option value="shipped" class="bg-darker">Shipped</option>
+                                <option value="in_transit" class="bg-darker">In Transit</option>
+                                <option value="delivered" class="bg-darker">Delivered</option>
+                                <option value="cancelled" class="bg-darker">Cancelled</option>
+                            </select>
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">▼</span>
+                        </div>
+                        <div class="relative flex-1 sm:flex-none min-w-[140px]">
+                            <select id="payment-filter" onchange="filterOrders()"
+                                class="w-full appearance-none bg-white/5 border border-white/10 hover:border-white/20 focus:border-primary px-4 md:px-6 py-2.5 md:py-3 pr-10 md:pr-12 rounded-xl outline-none text-sm text-white font-medium cursor-pointer transition-all focus:bg-darker/90 shadow-lg">
+                                <option value="" class="bg-darker">All Payments</option>
+                                <option value="pending" class="bg-darker">Unpaid</option>
+                                <option value="paid" class="bg-darker">Paid</option>
+                                <option value="refunded" class="bg-darker">Refunded</option>
+                            </select>
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">▼</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Table -->
+                <div class="bg-white/5 rounded-3xl border border-white/10 overflow-hidden shadow-xl backdrop-blur-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left whitespace-nowrap min-w-[900px]">
+                            <thead class="text-xs uppercase bg-black/20 text-slate-400 font-display tracking-wider">
+                                <tr>
+                                    <th class="py-4 md:py-5 px-4 md:px-6 font-semibold">Tracking ID</th>
+                                    <th class="py-4 md:py-5 px-4 md:px-6 font-semibold">Client</th>
+                                    <th class="py-4 md:py-5 px-4 md:px-6 font-semibold text-center">Items</th>
+                                    <th class="py-4 md:py-5 px-4 md:px-6 font-semibold text-right">Total</th>
+                                    <th class="py-4 md:py-5 px-4 md:px-6 font-semibold text-center">Payment</th>
+                                    <th class="py-4 md:py-5 px-4 md:px-6 font-semibold text-center">Status</th>
+                                    <th class="py-4 md:py-5 px-4 md:px-6 font-semibold">Date</th>
+                                    <th class="py-4 md:py-5 px-4 md:px-6"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== CREATE ORDER MODAL ====== -->
+    <div id="create-modal" onclick="if(event.target===this)hideCreateModal()"
+        class="hidden fixed inset-0 bg-darker/80 backdrop-blur-md items-center justify-center z-50 transition-opacity duration-300 opacity-0">
+        <div onclick="event.stopImmediatePropagation()"
+            class="bg-surface border border-white/10 rounded-[20px] md:rounded-[30px] w-full max-w-2xl mx-4 overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-300 scale-95 translate-y-4"
+            id="create-modal-content">
+            <!-- Header -->
+            <div class="px-6 md:px-8 flex justify-between items-center relative py-5 md:py-6 border-b border-white/10">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none"></div>
+                <h3 class="text-xl md:text-2xl font-bold text-white font-display relative z-10">
+                    <i class="fa-solid fa-box mr-2 text-primary-light"></i> Create New Package
+                </h3>
+                <button onclick="hideCreateModal()" class="text-slate-400 hover:text-white transition-colors text-3xl font-light relative z-10 hover:rotate-90 duration-300">×</button>
+            </div>
+            <!-- Body -->
+            <div class="p-6 md:p-8 space-y-6 bg-black/20 overflow-y-auto max-h-[65vh] thin-scroll">
+
+                <!-- Client Info -->
+                <div>
+                    <p class="form-section-label"><i class="fa-solid fa-user mr-2"></i>Client Information</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Full Name *</label>
+                            <input id="client-name" type="text" placeholder="John Doe" class="form-input">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Email *</label>
+                            <input id="client-email" type="email" placeholder="john@example.com" class="form-input">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Phone</label>
+                            <input id="client-phone" type="tel" placeholder="+1 (555) 123-4567" class="form-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <p class="form-section-label"><i class="fa-solid fa-location-dot mr-2"></i>Shipping Address</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Street Address *</label>
+                            <input id="addr-street" type="text" placeholder="123 Main Street, Apt 4B" class="form-input">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">City *</label>
+                            <input id="addr-city" type="text" placeholder="New York" class="form-input">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">State / Province *</label>
+                            <input id="addr-state" type="text" placeholder="NY" class="form-input">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">ZIP / Postal Code *</label>
+                            <input id="addr-zip" type="text" placeholder="10001" class="form-input">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Country *</label>
+                            <input id="addr-country" type="text" placeholder="United States" class="form-input" value="United States">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package Items -->
+                <div>
+                    <p class="form-section-label"><i class="fa-solid fa-cubes mr-2"></i>Package Items</p>
+                    <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                        <div class="relative flex-1">
+                            <select id="product-select" class="form-input form-select pr-10">
+                                <option value="" class="bg-darker">Select a product...</option>
+                            </select>
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
+                        </div>
+                        <input id="product-qty" type="number" min="1" value="1" placeholder="Qty" class="form-input w-20 text-center">
+                        <button onclick="addToPackage()"
+                            class="bg-primary/20 hover:bg-primary/30 border border-primary/30 text-primary-light px-4 py-2.5 rounded-xl font-semibold text-sm transition-all hover:-translate-y-0.5">
+                            <i class="fa-solid fa-plus mr-1"></i> Add
+                        </button>
+                    </div>
+                    <div id="package-items-list" class="space-y-2 mb-3">
+                        <!-- populated by js -->
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t border-white/10">
+                        <span class="text-slate-400 text-sm font-medium">Subtotal</span>
+                        <span id="package-subtotal" class="text-white font-bold font-mono text-lg">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Shipping -->
+                <div>
+                    <p class="form-section-label"><i class="fa-solid fa-truck mr-2"></i>Shipping</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Carrier *</label>
+                            <div class="relative">
+                                <select id="ship-carrier" class="form-input form-select pr-10">
+                                    <option value="ups" class="bg-darker">UPS</option>
+                                    <option value="fedex" class="bg-darker">FedEx</option>
+                                    <option value="dhl" class="bg-darker">DHL</option>
+                                    <option value="usps" class="bg-darker">USPS</option>
+                                    <option value="other" class="bg-darker">Other</option>
+                                </select>
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Method</label>
+                            <div class="relative">
+                                <select id="ship-method" class="form-input form-select pr-10">
+                                    <option value="standard" class="bg-darker">Standard</option>
+                                    <option value="express" class="bg-darker">Express</option>
+                                    <option value="overnight" class="bg-darker">Overnight</option>
+                                </select>
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Shipping Cost ($)</label>
+                            <input id="ship-cost" type="number" step="0.01" min="0" value="0" class="form-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment -->
+                <div>
+                    <p class="form-section-label"><i class="fa-solid fa-credit-card mr-2"></i>Payment</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Payment Method</label>
+                            <div class="relative">
+                                <select id="pay-method" class="form-input form-select pr-10">
+                                    <option value="credit_card" class="bg-darker">Credit Card</option>
+                                    <option value="bank_transfer" class="bg-darker">Bank Transfer</option>
+                                    <option value="paypal" class="bg-darker">PayPal</option>
+                                    <option value="cash" class="bg-darker">Cash on Delivery</option>
+                                </select>
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Payment Status</label>
+                            <div class="relative">
+                                <select id="pay-status" class="form-input form-select pr-10">
+                                    <option value="pending" class="bg-darker">Pending</option>
+                                    <option value="paid" class="bg-darker">Paid</option>
+                                </select>
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Order Notes (optional)</label>
+                    <textarea id="order-notes" rows="2" placeholder="Special instructions, gift wrapping, etc."
+                        class="form-input resize-none"></textarea>
+                </div>
+
+                <!-- Summary -->
+                <div class="bg-white/5 rounded-2xl p-5 border border-white/10">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-slate-400 text-sm">Subtotal</span>
+                        <span id="summary-subtotal" class="text-white font-mono">$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-slate-400 text-sm">Shipping</span>
+                        <span id="summary-shipping" class="text-white font-mono">$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t border-white/10">
+                        <span class="text-white font-bold font-display text-lg">Total</span>
+                        <span id="summary-total" class="text-emerald-400 font-bold font-mono text-xl">$0.00</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="flex justify-end gap-3 md:gap-4 px-6 md:px-8 py-5 md:py-6 border-t border-white/10 bg-black/40">
+                <button onclick="hideCreateModal()"
+                    class="px-4 md:px-6 py-2.5 text-slate-300 hover:text-white font-medium text-sm transition-colors rounded-xl hover:bg-white/5 font-display">Cancel</button>
+                <button onclick="createOrder()" id="create-btn"
+                    class="bg-gradient-to-r from-primary to-secondary hover:from-primary-light hover:to-primary text-white px-6 md:px-8 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-[0_8px_16px_rgba(138,43,226,0.3)] hover:shadow-[0_12px_24px_rgba(138,43,226,0.5)] hover:-translate-y-0.5 font-display">
+                    <i class="fa-solid fa-paper-plane mr-2"></i> Create Package
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== ORDER DETAIL MODAL ====== -->
+    <div id="detail-modal" onclick="if(event.target===this)hideDetailModal()"
+        class="hidden fixed inset-0 bg-darker/80 backdrop-blur-md items-center justify-center z-50 transition-opacity duration-300 opacity-0">
+        <div onclick="event.stopImmediatePropagation()"
+            class="bg-surface border border-white/10 rounded-[20px] md:rounded-[30px] w-full max-w-2xl mx-4 overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-300 scale-95 translate-y-4"
+            id="detail-modal-content">
+            <div id="detail-body" class="overflow-y-auto max-h-[85vh] thin-scroll">
+                <!-- populated by js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== SHIP MODAL (enter carrier tracking number) ====== -->
+    <div id="ship-modal" onclick="if(event.target===this)hideShipModal()"
+        class="hidden fixed inset-0 bg-darker/80 backdrop-blur-md items-center justify-center z-50 transition-opacity duration-300 opacity-0">
+        <div onclick="event.stopImmediatePropagation()"
+            class="bg-surface border border-white/10 rounded-[20px] md:rounded-[30px] w-full max-w-md mx-4 overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-300 scale-95 translate-y-4"
+            id="ship-modal-content">
+            <div class="px-6 md:px-8 flex justify-between items-center relative py-5 md:py-6 border-b border-white/10">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent pointer-events-none"></div>
+                <h3 class="text-xl font-bold text-white font-display relative z-10">
+                    <i class="fa-solid fa-truck-fast mr-2 text-blue-400"></i> Ship Package
+                </h3>
+                <button onclick="hideShipModal()" class="text-slate-400 hover:text-white transition-colors text-3xl font-light relative z-10 hover:rotate-90 duration-300">×</button>
+            </div>
+            <div class="p-6 md:p-8 bg-black/20 space-y-5">
+                <input type="hidden" id="ship-order-id">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2 font-display">Carrier Tracking Number *</label>
+                    <input id="carrier-tracking-num" type="text" placeholder="e.g. 1Z999AA10123456784"
+                        class="form-input">
+                    <p class="text-xs text-slate-500 mt-2">Enter the tracking number provided by the carrier. This will be used to track the package on the carrier's website.</p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 px-6 md:px-8 py-5 border-t border-white/10 bg-black/40">
+                <button onclick="hideShipModal()" class="px-4 py-2.5 text-slate-300 hover:text-white font-medium text-sm transition-colors rounded-xl hover:bg-white/5 font-display">Cancel</button>
+                <button onclick="confirmShipment()"
+                    class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-[0_8px_16px_rgba(59,130,246,0.3)] hover:-translate-y-0.5 font-display">
+                    <i class="fa-solid fa-check mr-2"></i> Confirm Shipment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"
+        class="fixed bottom-8 right-8 bg-surface border border-primary/40 text-white px-6 py-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] items-center gap-4 text-sm font-medium z-[100] transform transition-all duration-500 translate-y-32 opacity-0 backdrop-blur-xl flex">
+        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">✓</div>
+        <span id="toast-text" class="font-display tracking-wide text-base"></span>
+    </div>
+
+    <script src="assets/script/orders.js"></script>
+</body>
+
+</html>

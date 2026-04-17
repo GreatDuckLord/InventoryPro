@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventoryPro • Dashboard</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#8a2be2',
+                        'primary-light': '#b05bff',
+                        secondary: '#4a00e0',
+                        darker: '#080c14',
+                        surface: 'rgba(15, 23, 42, 0.65)',
+                        'surface-hover': 'rgba(30, 41, 59, 0.8)',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body
+    class="bg-darker text-slate-200 font-sans antialiased overflow-hidden selection:bg-primary-light selection:text-white">
+    <!-- Animated Orbs -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div
+        class="flex flex-col md:flex-row h-screen relative z-10 p-2 sm:p-5 gap-2 sm:gap-5 backdrop-blur-[40px] bg-darker/40">
+
+        <!-- Mobile Overlay -->
+        <div id="mobile-overlay" onclick="toggleSidebar()"
+            class="fixed inset-0 bg-black/50 z-40 hidden md:hidden backdrop-blur-sm"></div>
+
+        <!-- Sidebar Glass -->
+        <div id="sidebar"
+            class="glass-panel w-[280px] flex flex-col rounded-[20px] md:rounded-[30px] shadow-2xl absolute md:relative z-50 inset-y-2 md:inset-0 left-2 md:left-0 transition-transform duration-300 -translate-x-[110%] md:translate-x-0 overflow-hidden backdrop-blur-xl border border-white/10 h-[calc(100vh-16px)] md:h-auto">
+            <div class="px-6 py-6 md:px-8 md:py-8 border-b border-white/10 flex items-center gap-4 relative z-10">
+                <div
+                    class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-[0_10px_20px_rgba(138,43,226,0.3)]">
+                    📦
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight text-white font-display">InventoryPro</h1>
+            </div>
+
+            <nav class="flex-1 px-5 py-8 space-y-3 relative z-10">
+                <button onclick="navigateTo('dashboard')" id="nav-dashboard"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/5 relative overflow-hidden group active-nav">
+                    <span class="text-xl">📊</span>
+                    <span class="font-display tracking-wide">Dashboard</span>
+                </button>
+                <button onclick="navigateTo('inventory')" id="nav-inventory"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">📋</span>
+                    <span class="font-display tracking-wide">Inventory</span>
+                </button>
+                <button onclick="navigateTo('reports')" id="nav-reports"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">📈</span>
+                    <span class="font-display tracking-wide">Reports</span>
+                </button>
+                <button onclick="window.location.href='orders.html'" id="nav-orders"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">🚚</span>
+                    <span class="font-display tracking-wide">Orders</span>
+                </button>
+                <button onclick="navigateTo('about')" id="nav-about"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">ℹ️</span>
+                    <span class="font-display tracking-wide">About Us</span>
+                </button>
+                <button onclick="navigateTo('contact')" id="nav-contact"
+                    class="nav-btn w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left font-medium transition-all duration-300 text-slate-300 hover:text-white hover:bg-white/10 relative overflow-hidden group">
+                    <span class="text-xl">✉️</span>
+                    <span class="font-display tracking-wide">Contact</span>
+                </button>
+            </nav>
+
+            <div class="p-5 border-t border-white/10 relative z-10">
+                <div
+                    class="flex items-center gap-4 rounded-2xl p-4 bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center text-white font-bold text-sm shadow-[0_5px_15px_rgba(138,43,226,0.4)] group-hover:scale-105 transition-transform">
+                        NB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-white font-display tracking-wide">Manager</p>
+                        <p class="text-xs text-primary-light font-medium">Admin • Tangier</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-hidden relative min-w-0">
+
+            <!-- Top Bar -->
+            <header
+                class="min-h-[72px] md:min-h-[88px] glass-panel rounded-[20px] md:rounded-[30px] border border-white/10 shadow-xl mb-3 md:mb-5 p-4 md:px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4 backdrop-blur-xl">
+                <div class="flex items-center gap-4 w-full lg:w-auto">
+                    <button onclick="toggleSidebar()"
+                        class="md:hidden text-white hover:text-primary transition-colors p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <h2 id="page-title" class="text-xl md:text-3xl font-bold tracking-tight text-white font-display">
+                        Dashboard</h2>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 md:gap-5 w-full lg:w-auto">
+                    <div id="add-item-container" class="flex-1 md:flex-none hidden">
+                        <div onclick="showAddModal()"
+                            class="flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary-light hover:to-primary text-white px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl cursor-pointer font-semibold shadow-[0_10px_20px_rgba(138,43,226,0.3)] hover:shadow-[0_15px_30px_rgba(138,43,226,0.5)] transition-all duration-300 hover:-translate-y-0.5 group justify-center text-sm md:text-base">
+                            <span
+                                class="text-lg md:text-xl group-hover:rotate-90 transition-transform duration-300">＋</span>
+                            <span class="font-display tracking-wide whitespace-nowrap">New Item</span>
+                        </div>
+                    </div>
+                    <div id="search-container" class="relative group flex-1 md:flex-none min-w-[150px] hidden">
+                        <span
+                            class="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-light transition-colors text-sm md:text-base">🔍</span>
+                        <input id="search-input" onkeyup="if(event.key==='Enter') filterInventory()" type="text"
+                            placeholder="Search inventory..."
+                            class="bg-white/5 border border-white/10 focus:border-primary-light focus:bg-white/10 w-full lg:w-72 pl-9 md:pl-12 pr-4 py-2.5 md:py-3 rounded-xl md:rounded-2xl outline-none transition-all duration-300 text-xs md:text-sm text-white placeholder-slate-400 focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)]">
+                    </div>
+                    <button onclick="logout()"
+                        class="flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 px-3 md:px-5 py-2.5 md:py-3 rounded-xl md:rounded-2xl transition-all duration-300 font-semibold hover:shadow-[0_10px_20px_rgba(239,68,68,0.15)] group">
+                        <span class="group-hover:-translate-x-1 transition-transform">🚪</span>
+                        <span class="font-display hidden sm:inline">Logout</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Container -->
+            <div
+                class="flex-1 overflow-auto rounded-[20px] md:rounded-[30px] glass-panel border border-white/10 p-4 sm:p-6 md:p-8 shadow-2xl relative scroll-smooth thin-scroll">
+
+                <!-- DASHBOARD SECTION -->
+                <div id="dashboard-section" class="pb-4 md:pb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+                        <div class="stat-card">
+                            <p class="stat-label">Total Items</p>
+                            <p id="total-items" class="stat-value text-white">0</p>
+                            <p class="stat-desc">Current inventory count</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-label">Total Value</p>
+                            <p id="total-value" class="stat-value text-emerald-400">$0.00</p>
+                            <p class="stat-desc">Accumulated value</p>
+                        </div>
+                        <div class="stat-card border-amber-500/30">
+                            <p class="stat-label">Low Stock</p>
+                            <p id="low-stock" class="stat-value text-amber-400">0</p>
+                            <p class="stat-desc text-amber-500/70">Items below threshold</p>
+                        </div>
+                        <div class="stat-card border-red-500/30">
+                            <p class="stat-label">Out of Stock</p>
+                            <p id="out-of-stock" class="stat-value text-red-500">0</p>
+                            <p class="stat-desc text-red-500/70">Requires restocking</p>
+                        </div>
+                    </div>
+
+                    <!-- Stock Distribution Chart -->
+                    <div
+                        class="bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl p-4 md:p-8 backdrop-blur-md relative overflow-hidden group">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8 font-display">Stock
+                            Distribution</h3>
+                        <div id="chart-container" class="flex gap-2 md:gap-8 items-end h-[200px] md:h-[300px]">
+                            <!-- populated by js -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INVENTORY SECTION -->
+                <div id="inventory-section" class="hidden pb-8">
+                    <div
+                        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
+                        <h3 class="text-xl md:text-2xl font-bold text-white font-display">All Items</h3>
+                        <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                            <input type="file" id="csv-file-input" accept=".csv" class="hidden" onchange="handleCSVImport(event)">
+                            <button onclick="document.getElementById('csv-file-input').click()"
+                                class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 px-4 py-2.5 md:py-3 rounded-xl transition-all font-semibold text-sm shadow-[0_0_10px_rgba(16,185,129,0.1)] hover:shadow-[0_10px_20px_rgba(16,185,129,0.15)] group">
+                                <span class="group-hover:-translate-y-0.5 transition-transform">⬆️</span> Import CSV
+                            </button>
+                            <button onclick="exportToCSV()"
+                                class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 px-4 py-2.5 md:py-3 rounded-xl transition-all font-semibold text-sm shadow-[0_0_10px_rgba(16,185,129,0.1)] hover:shadow-[0_10px_20px_rgba(16,185,129,0.15)] group">
+                                <span class="group-hover:-translate-y-0.5 transition-transform">⬇️</span> Export CSV
+                            </button>
+                            <button onclick="deleteAllItems()"
+                                class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 px-4 py-2.5 md:py-3 rounded-xl transition-all font-semibold text-sm shadow-[0_0_10px_rgba(239,68,68,0.1)]">
+                                <span>🗑️</span> Delete All
+                            </button>
+                            <div class="relative flex-1 sm:flex-none min-w-[150px]">
+                                <select id="category-filter" onchange="filterInventory()"
+                                    class="w-full appearance-none bg-white/5 border border-white/10 hover:border-white/20 focus:border-primary px-4 md:px-6 py-2.5 md:py-3 pr-10 md:pr-12 rounded-xl outline-none text-sm text-white font-medium cursor-pointer transition-all focus:bg-darker/90 shadow-lg">
+                                    <option value="" class="bg-darker">All Categories</option>
+                                    <option value="Electronics" class="bg-darker">Electronics</option>
+                                    <option value="Furniture" class="bg-darker">Furniture</option>
+                                    <option value="Office Supplies" class="bg-darker">Office Supplies</option>
+                                    <option value="Tools" class="bg-darker">Tools</option>
+                                    <option value="Clothing" class="bg-darker">Clothing</option>
+                                    <option value="Books" class="bg-darker">Books</option>
+                                    <option value="Groceries" class="bg-darker">Groceries</option>
+                                </select>
+                                <span
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">▼</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white/5 rounded-3xl border border-white/10 overflow-hidden shadow-xl backdrop-blur-sm">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left whitespace-nowrap min-w-[800px]">
+                                <thead class="text-xs uppercase bg-black/20 text-slate-400 font-display tracking-wider">
+                                    <tr>
+                                        <th class="py-4 md:py-5 px-4 md:px-8 font-semibold">Item</th>
+                                        <th class="py-4 md:py-5 px-4 md:px-8 font-semibold">Category</th>
+                                        <th class="text-right py-4 md:py-5 px-4 md:px-8 font-semibold">Quantity</th>
+                                        <th class="text-right py-4 md:py-5 px-4 md:px-8 font-semibold">Unit Price</th>
+                                        <th class="text-right py-4 md:py-5 px-4 md:px-8 font-semibold">Total</th>
+                                        <th class="text-center py-4 md:py-5 px-4 md:px-8 font-semibold">Status</th>
+                                        <th class="py-4 md:py-5 px-4 md:px-8"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventory-table" class="divide-y divide-white/5"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REPORTS SECTION -->
+                <div id="reports-section" class="hidden space-y-6 md:space-y-8 pb-8">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <h3 class="text-xl md:text-2xl font-bold text-white font-display hidden sm:block">Live Reports
+                        </h3>
+
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                        <!-- Category Breakdown -->
+                        <div
+                            class="bg-white/5 rounded-3xl border border-white/10 p-6 md:p-8 backdrop-blur-md shadow-xl">
+                            <h3 class="text-xl md:text-2xl font-bold text-white mb-6 font-display">Category Breakdown
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="text-xs uppercase text-slate-400 border-b border-white/10">
+                                        <tr>
+                                            <th class="pb-3 px-2 font-semibold">Category</th>
+                                            <th class="text-right pb-3 px-2 font-semibold">Items</th>
+                                            <th class="text-right pb-3 px-2 font-semibold">Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="report-category-body" class="divide-y divide-white/5">
+                                        <!-- populated by js -->
+                                    </tbody>
+                                    <tfoot class="border-t border-white/10 font-bold text-white">
+                                        <tr>
+                                            <td class="pt-3 px-2 uppercase text-xs text-slate-400 tracking-wider">Total
+                                            </td>
+                                            <td id="report-cat-total-items" class="text-right pt-3 px-2 font-mono">0
+                                            </td>
+                                            <td id="report-cat-total-value"
+                                                class="text-right pt-3 px-2 text-emerald-400 font-mono">$0.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Top Valuable Items -->
+                        <div
+                            class="bg-white/5 rounded-3xl border border-white/10 p-6 md:p-8 backdrop-blur-md shadow-xl">
+                            <h3 class="text-xl md:text-2xl font-bold text-white mb-6 font-display">Highest Valued Items
+                            </h3>
+                            <div class="space-y-4" id="report-top-items">
+                                <!-- populated by js -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Low Stock Alerts -->
+                    <div class="bg-white/5 rounded-3xl border border-white/10 p-6 md:p-8 backdrop-blur-md shadow-xl">
+                        <h3
+                            class="text-xl md:text-2xl font-bold text-white mb-6 font-display text-amber-400 flex items-center gap-3">
+                            <span>⚠️</span> Low Stock & Out of Stock Alerts
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left whitespace-nowrap">
+                                <thead class="text-xs uppercase text-slate-400 border-b border-white/10">
+                                    <tr>
+                                        <th class="pb-3 px-4 font-semibold">Item</th>
+                                        <th class="pb-3 px-4 font-semibold">Category</th>
+                                        <th class="text-right pb-3 px-4 font-semibold">Quantity</th>
+                                        <th class="text-center pb-3 px-4 font-semibold">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-alerts-body" class="divide-y divide-white/5">
+                                    <!-- populated by js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRIVACY SECTION -->
+                <div id="privacy-section" class="hidden pb-8">
+                    <div class="max-w-4xl mx-auto py-8">
+                        <h1 class="text-3xl md:text-4xl font-bold mb-6 font-display text-white">Privacy Policy</h1>
+                        <p class="mb-4 text-sm text-slate-500">Last Updated: 2026-04-16</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">1. Information We Collect</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">We collect information to provide better services to all our users. We may collect personal information such as your name, email address, and inventory data when you use InventoryPro.</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">2. How We Use Information</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">We use the information we collect from all our services to provide, maintain, protect and improve them, to develop new ones, and to protect InventoryPro and our users. We also use this information to offer you tailored content.</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">3. Information Security</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">We work hard to protect InventoryPro and our users from unauthorized access to or unauthorized alteration, disclosure or destruction of information we hold. In particular, we encrypt many of our services using SSL.</p>
+                    </div>
+                </div>
+
+                <!-- SECURITY SECTION -->
+                <div id="security-section" class="hidden pb-8">
+                    <div class="max-w-4xl mx-auto py-8">
+                        <h1 class="text-3xl md:text-4xl font-bold mb-6 font-display text-white">Security Infrastructure</h1>
+                        <p class="mb-4 text-sm text-slate-500">Last Updated: 2026-04-16</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">1. Data Encryption</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">Security is our top priority. All data transmitted between your local client and our infrastructure is heavily encrypted via SSL/TLS. Passwords and sensitive PII are hashed using industry standard algorithms such as bcrypt.</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">2. Compliance & Standards</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">We follow SOC2 and ISO guidelines internally to ensure that any software modifications, deployments, and access control lists are continuously regulated and audited.</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">3. Reporting Vulnerabilities</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">If you believe you have found a security vulnerability in our application, please report it to our security team via our contact form. We deeply appreciate any help from the community in maintaining the integrity of our platform.</p>
+                    </div>
+                </div>
+
+                <!-- TERMS SECTION -->
+                <div id="terms-section" class="hidden pb-8">
+                    <div class="max-w-4xl mx-auto py-8">
+                        <h1 class="text-3xl md:text-4xl font-bold mb-6 font-display text-white">Terms of Service</h1>
+                        <p class="mb-4 text-sm text-slate-500">Last Updated: 2026-04-16</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">1. Introduction</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">Welcome to InventoryPro. By accessing our website, you agree to comply with and be bound by the following terms and conditions of use. If you disagree with any part of these terms, please do not use our service.</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">2. Use License</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">Permission is granted to temporarily use the materials on InventoryPro's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not modify or copy the materials.</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">3. Disclaimer</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">The materials on InventoryPro's website are provided on an 'as is' basis. InventoryPro makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose.</p>
+                    </div>
+                </div>
+
+                <!-- COOKIE SECTION -->
+                <div id="cookie-section" class="hidden pb-8">
+                    <div class="max-w-4xl mx-auto py-8">
+                        <h1 class="text-3xl md:text-4xl font-bold mb-6 font-display text-white">Cookie Policy</h1>
+                        <p class="mb-4 text-sm text-slate-500">Last Updated: 2026-04-16</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">1. What Are Cookies</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">Cookies are tiny files that are downloaded to your computer to improve your experience. This page describes what information they gather, how we use it and why we sometimes need to store these cookies.</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">2. How We Use Cookies</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">We use cookies for a variety of reasons detailed below. Unfortunately, in most cases there are no industry standard options for disabling cookies without completely disabling the functionality and features they add to this site.</p>
+                        <h2 class="text-xl md:text-2xl font-semibold mt-8 mb-4 font-display text-white">3. Disabling Cookies</h2>
+                        <p class="mb-4 leading-relaxed text-slate-400">You can prevent the setting of cookies by adjusting the settings on your browser (see your browser Help for how to do this). Be aware that disabling cookies will affect the functionality of this and many other websites that you visit.</p>
+                    </div>
+                </div>
+
+                <!-- ABOUT SECTION -->
+                <div id="about-section" class="hidden pb-8">
+                    <div class="max-w-5xl w-full mx-auto flex flex-col items-center py-8">
+                        <div class="text-center mb-16">
+                            <div class="inline-block px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary-light text-sm font-semibold mb-6 w-max font-display">About Us</div>
+                            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 font-display tracking-tight leading-tight">Welcome to InventoryPro</h1>
+                            <p class="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                                At InventoryPro, we provide real-time tracking solutions for your valuable assets. Our state-of-the-art technology ensures that you can monitor your inventory, shipments, and assets with precision, elegance, and reliability.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                            <div class="glass-panel border border-white/10 rounded-[30px] p-8 shadow-2xl backdrop-blur-xl group hover:-translate-y-2 transition-transform duration-300 text-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-3xl mx-auto mb-6 shadow-lg shadow-primary/30 relative z-10">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-3 font-display relative z-10">Lightning Fast</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed relative z-10">Experience near-instant real-time updates and seamless state synchronization across all your devices, anytime, anywhere.</p>
+                            </div>
+                            <div class="glass-panel border border-white/10 rounded-[30px] p-8 shadow-2xl backdrop-blur-xl group hover:-translate-y-2 transition-transform duration-300 text-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-b from-[#00f2fe]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00f2fe] to-[#4facfe] flex items-center justify-center text-white text-3xl mx-auto mb-6 shadow-lg shadow-[#00f2fe]/30 relative z-10">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-3 font-display relative z-10">Highly Secure</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed relative z-10">Your data rests safely with robust encryption protocols and automatic compliance matching out-of-the-box.</p>
+                            </div>
+                            <div class="glass-panel border border-white/10 rounded-[30px] p-8 shadow-2xl backdrop-blur-xl group hover:-translate-y-2 transition-transform duration-300 text-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-b from-[#ff0844]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ff0844] to-[#ffb199] flex items-center justify-center text-white text-3xl mx-auto mb-6 shadow-lg shadow-[#ff0844]/30 relative z-10">
+                                    <i class="fa-solid fa-chart-pie"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-3 font-display relative z-10">Data Driven</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed relative z-10">Unlock powerful insights with built-in analytics, generating smart reports to help you make well-informed decisions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTACT SECTION -->
+                <div id="contact-section" class="hidden pb-8">
+                    <div class="max-w-4xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 py-8">
+                        <div class="flex flex-col justify-center">
+                            <div class="inline-block px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary-light text-sm font-semibold mb-6 w-max font-display">Contact Us</div>
+                            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 font-display tracking-tight leading-tight">Get in touch with us</h1>
+                            <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                                Have questions or feedback? We'd love to hear from you! Please fill out the form and our team will get back to you as soon as possible.
+                            </p>
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-primary-light text-xl mt-1 shrink-0 backdrop-blur-sm shadow-lg">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white font-semibold text-lg font-display">Our Office</h3>
+                                        <p class="text-slate-400">123 Innovation Drive<br>Tech Hub, Tangier 90000</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-primary-light text-xl mt-1 shrink-0 backdrop-blur-sm shadow-lg">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white font-semibold text-lg font-display">Email Us</h3>
+                                        <p class="text-slate-400">support@inventorypro.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel border border-white/10 rounded-[30px] p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                            <form action="https://formspree.io/f/xvzdgrqk" method="POST" class="space-y-6 relative z-10">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-slate-300 mb-2 font-display">Your Name</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500">
+                                            <i class="fa-regular fa-user"></i>
+                                        </div>
+                                        <input type="text" id="name" name="name" placeholder="John Doe" required class="w-full bg-black/20 border border-white/10 focus:border-primary-light focus:bg-black/40 rounded-xl pl-11 pr-4 py-3 outline-none transition-all duration-300 text-sm text-white placeholder-slate-500 shadow-inner focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)]">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-slate-300 mb-2 font-display">Your Email</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500">
+                                            <i class="fa-regular fa-envelope"></i>
+                                        </div>
+                                        <input type="email" id="email" name="email" placeholder="john@example.com" required class="w-full bg-black/20 border border-white/10 focus:border-primary-light focus:bg-black/40 rounded-xl pl-11 pr-4 py-3 outline-none transition-all duration-300 text-sm text-white placeholder-slate-500 shadow-inner focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)]">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="message" class="block text-sm font-medium text-slate-300 mb-2 font-display">Message / Feedback</label>
+                                    <textarea id="message" name="message" placeholder="How can we help you?" rows="5" required class="w-full bg-black/20 border border-white/10 focus:border-primary-light focus:bg-black/40 rounded-xl px-4 py-3 outline-none transition-all duration-300 text-sm text-white placeholder-slate-500 shadow-inner focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)] resize-none"></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary-light hover:to-primary text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-300 shadow-[0_10px_20px_rgba(138,43,226,0.3)] hover:shadow-[0_15px_30px_rgba(138,43,226,0.5)] hover:-translate-y-0.5 flex items-center justify-center gap-2 font-display group">
+                                    <span>Send Message</span>
+                                    <i class="fa-solid fa-paper-plane group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <footer class="border-t border-white/10 mt-auto relative z-10 w-full pt-16 pb-8 mt-12">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                            <!-- Branding & About -->
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div
+                                        class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white shadow-lg">
+                                        <i class="fa-solid fa-cube text-sm"></i>
+                                    </div>
+                                    <span
+                                        class="text-xl font-bold tracking-tight text-white font-display">InventoryPro</span>
+                                </div>
+                                <p class="text-slate-400 text-sm leading-relaxed">
+                                    Intelligent inventory management for modern businesses. Simplify your workflow,
+                                    track stocks in real-time, and make data-driven decisions.
+                                </p>
+                                <div class="flex gap-4 pt-2">
+                                    <a href="#"
+                                        class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300">
+                                        <i class="fa-brands fa-twitter"></i>
+                                    </a>
+                                    <a href="#"
+                                        class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300">
+                                        <i class="fa-brands fa-github"></i>
+                                    </a>
+                                    <a href="#"
+                                        class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300">
+                                        <i class="fa-brands fa-linkedin-in"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Quick Links -->
+                            <div>
+                                <h3 class="text-white font-semibold font-display mb-6">Quick Links</h3>
+                                <ul class="space-y-3">
+                                    <li><a href="javascript:navigateTo('dashboard')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> Dashboard</a></li>
+                                    <li><a href="javascript:navigateTo('inventory')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> Inventory</a></li>
+                                    <li><a href="javascript:navigateTo('reports')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> Reports</a></li>
+                                    <li><a href="javascript:navigateTo('about')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> About Us</a></li>
+                                    <li><a href="javascript:navigateTo('contact')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> Contact Us</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Legal -->
+                            <div>
+                                <h3 class="text-white font-semibold font-display mb-6">Legal</h3>
+                                <ul class="space-y-3">
+                                    <li><a href="javascript:navigateTo('terms')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> Terms of Service</a>
+                                    </li>
+                                    <li><a href="javascript:navigateTo('privacy')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> Privacy Policy</a>
+                                    </li>
+                                    <li><a href="javascript:navigateTo('cookie')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> Cookie Policy</a>
+                                    </li>
+                                    <li><a href="javascript:navigateTo('security')"
+                                            class="text-slate-400 hover:text-primary-light transition-colors text-sm flex items-center gap-2"><i
+                                                class="fa-solid fa-chevron-right text-[10px]"></i> Security</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Newsletter -->
+                            <div>
+                                <h3 class="text-white font-semibold font-display mb-6">Newsletter</h3>
+                                <p class="text-slate-400 text-sm mb-4">Subscribe to our newsletter for the latest
+                                    updates and features.</p>
+                                <form class="relative">
+                                    <input type="email" placeholder="Enter your email"
+                                        class="w-full bg-black/20 border border-white/10 focus:border-primary-light focus:bg-black/40 rounded-xl pl-4 pr-12 py-2.5 outline-none transition-all duration-300 text-sm text-white placeholder-slate-500 shadow-inner"
+                                        required>
+                                    <button type="submit"
+                                        class="absolute right-1.5 top-1.5 bottom-1.5 bg-primary hover:bg-primary-light text-white rounded-lg px-3 flex items-center justify-center transition-colors">
+                                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div
+                            class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left text-slate-400 text-sm">
+                            <p>&copy; 2026 InventoryPro. All rights reserved.</p>
+                            <div class="flex items-center gap-2">
+                                <span>Designed with <i class="fa-solid fa-heart text-red-500 mx-1"></i> in
+                                    Tangier</span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS & OVERLAYS -->
+    <!-- ADD / EDIT MODAL -->
+    <div id="modal" onclick="if(event.target===this)hideModal()"
+        class="hidden fixed inset-0 bg-darker/80 backdrop-blur-md items-center justify-center z-50 transition-opacity duration-300 opacity-0">
+        <div onclick="event.stopImmediatePropagation()"
+            class="bg-surface border border-glass-border rounded-[20px] md:rounded-[30px] w-full max-w-lg mx-4 overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-300 scale-95 translate-y-4"
+            id="modal-content">
+            <div class="px-6 md:px-8 flex justify-between items-center relative py-5 md:py-6 border-b border-white/10">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none"></div>
+                <h3 id="modal-title" class="text-xl md:text-2xl font-bold text-white font-display relative z-10">Add New
+                    Item</h3>
+                <button onclick="hideModal()"
+                    class="text-slate-400 hover:text-white transition-colors text-3xl font-light relative z-10 hover:rotate-90 duration-300">×</button>
+            </div>
+            <div class="p-6 md:p-8 space-y-5 md:space-y-6 bg-black/20">
+                <div class="relative">
+                    <label class="block text-sm font-medium text-slate-300 mb-2 font-display">Item Name</label>
+                    <input id="form-name" type="text" placeholder="e.g. Mechanical Keyboard"
+                        class="w-full bg-white/5 border border-white/10 focus:border-primary focus:bg-white/10 rounded-xl px-4 py-2.5 md:py-3 outline-none transition-all text-sm text-white placeholder-slate-500 shadow-inner focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)]">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2 font-display">Category</label>
+                        <select id="form-category"
+                            class="w-full bg-white/5 border border-white/10 focus:border-primary focus:bg-white/10 rounded-xl px-4 py-2.5 md:py-3 outline-none text-sm text-white cursor-pointer shadow-inner focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)] appearance-none">
+                            <option value="Electronics" class="bg-darker">Electronics</option>
+                            <option value="Furniture" class="bg-darker">Furniture</option>
+                            <option value="Office Supplies" class="bg-darker">Office Supplies</option>
+                            <option value="Tools" class="bg-darker">Tools</option>
+                            <option value="Clothing" class="bg-darker">Clothing</option>
+                            <option value="Books" class="bg-darker">Books</option>
+                            <option value="Groceries" class="bg-darker">Groceries</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2 font-display">Quantity</label>
+                        <input id="form-quantity" type="number" min="0" placeholder="0"
+                            class="w-full bg-white/5 border border-white/10 focus:border-primary focus:bg-white/10 rounded-xl px-4 py-2.5 md:py-3 outline-none transition-all text-sm text-white placeholder-slate-500 shadow-inner focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)]">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2 font-display">Unit Price ($)</label>
+                    <input id="form-price" type="number" step="0.01" placeholder="0.00"
+                        class="w-full bg-white/5 border border-white/10 focus:border-primary focus:bg-white/10 rounded-xl px-4 py-2.5 md:py-3 outline-none transition-all text-sm text-white placeholder-slate-500 shadow-inner focus:shadow-[0_0_0_4px_rgba(138,43,226,0.15)]">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 md:gap-4 px-6 md:px-8 py-5 md:py-6 border-t border-white/10 bg-black/40">
+                <button onclick="hideModal()"
+                    class="px-4 md:px-6 py-2.5 text-slate-300 hover:text-white font-medium text-sm transition-colors rounded-xl hover:bg-white/5 font-display">Cancel</button>
+                <button onclick="saveItem()" id="save-btn"
+                    class="bg-gradient-to-r from-primary to-secondary hover:from-primary-light hover:to-primary text-white px-6 md:px-8 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-[0_8px_16px_rgba(138,43,226,0.3)] hover:shadow-[0_12px_24px_rgba(138,43,226,0.5)] hover:-translate-y-0.5 font-display">
+                    Save Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animated Toast -->
+    <div id="toast"
+        class="fixed bottom-8 right-8 bg-surface border border-primary/40 text-white px-6 py-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] items-center gap-4 text-sm font-medium z-[100] transform transition-all duration-500 translate-y-32 opacity-0 backdrop-blur-xl flex">
+        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">✓
+        </div>
+        <span id="toast-text" class="font-display tracking-wide text-base"></span>
+    </div>
+
+    <script src="assets/script/dashboard.js"></script>
+</body>
+
+</html>

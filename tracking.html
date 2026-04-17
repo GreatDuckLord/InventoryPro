@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventoryPro • Track Your Package</title>
+    <meta name="description" content="Track your package in real-time with InventoryPro. Enter your tracking ID to get live delivery updates from UPS, FedEx, DHL, and USPS.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/tracking.css">
+</head>
+
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Back to Home -->
+    <a href="index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+    </a>
+
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-icon">
+                <i class="fa-solid fa-location-crosshairs"></i>
+            </div>
+            <h1>Track Your Package</h1>
+            <p>Enter your tracking ID below to get real-time updates on your package delivery status.</p>
+        </header>
+
+        <!-- Search Card -->
+        <div class="search-card">
+            <div class="search-group">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="tracking-input" type="text" class="search-input" placeholder="Enter your tracking ID..."
+                        autofocus autocomplete="off">
+                </div>
+                <button id="track-btn" class="search-btn" onclick="trackPackage()">
+                    <i class="fa-solid fa-location-arrow"></i> Track
+                </button>
+            </div>
+            <p class="search-hint">Example format: <code>IPK-260417-0001-ABCD</code></p>
+        </div>
+
+        <!-- Results Container (populated by JS) -->
+        <div id="results-container"></div>
+    </div>
+
+    <script src="assets/script/tracking.js"></script>
+</body>
+
+</html>
